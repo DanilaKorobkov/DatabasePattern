@@ -1,81 +1,124 @@
 # Internal
 # Python
 
-class UnitOfWork:
+class PresentedInDatabaseObject:
 
     def __init__(self):
-
-        self.newObjects = []
-        self.dirtyObjects = []
-        self.removedObjects = []
+        self.id = None
 
 
-    def registerNew(self, obj):
-
-        assert obj.id is not None
-
-        assert obj not in self.dirtyObjects
-        assert obj not in self.removedObjects
-        assert obj not in self.newObjects
-
-        self.newObjects.append(obj)
+    def markNew(self):
+        UnitOfWork.registerNew(self)
 
 
-    def registerDirty(self, obj):
-
-        assert obj.id is not None
-
-        assert obj not in self.removedObjects
-        assert obj not in self.newObjects
-        assert obj not in self.dirtyObjects
-
-        self.newObjects.append(obj)
+    def markClean(self):
+        UnitOfWork.registerClean(self)
 
 
-    def registerRemoved(self, obj):
+    def markDirty(self):
+        UnitOfWork.registerDirty(self)
+
+
+    def markRemoved(self):
+        UnitOfWork.registerRemoved(self)
+
+
+class UnitOfWork:
+
+    newObjects = []
+    dirtyObjects = []
+    removedObjects = []
+
+    @classmethod
+    def registerNew(cls, obj: PresentedInDatabaseObject):
 
         assert obj.id is not None
 
-        if obj in self.newObjects:
-            self.newObjects.remove(obj)
+        assert obj not in cls.dirtyObjects
+        assert obj not in cls.removedObjects
+        assert obj not in cls.newObjects
 
-        self.dirtyObjects.remove(obj)
-
-        if obj not in self.removedObjects:
-            self.removedObjects.append(obj)
+        cls.newObjects.append(obj)
 
 
-    # Объект считанный из базы данных
-    def registerClean(self, obj):
+    @classmethod
+    def registerDirty(cls, obj: PresentedInDatabaseObject):
+
+        assert obj.id is not None
+
+        assert obj not in cls.removedObjects
+        assert obj not in cls.newObjects
+        assert obj not in cls.dirtyObjects
+
+        cls.newObjects.append(obj)
+
+
+    @classmethod
+    def registerRemoved(cls, obj: PresentedInDatabaseObject):
+
+        assert obj.id is not None
+
+        if obj in cls.newObjects:
+            cls.newObjects.remove(obj)
+
+        cls.dirtyObjects.remove(obj)
+
+        if obj not in cls.removedObjects:
+            cls.removedObjects.append(obj)
+
+
+    @classmethod
+    def registerClean(cls, obj: PresentedInDatabaseObject):
         pass
 
 
-    def commit(self):
+    @classmethod
+    def commit(cls):
 
-        self.insertNew()
-        self.updateDirty()
-        self.deleteRemoved()
+        cls.insertNew()
+        cls.updateDirty()
+        cls.deleteRemoved()
 
 
-    def insertNew(self):
+    @classmethod
+    def insertNew(cls):
 
-        for obj in self.newObjects:
+        for obj in cls.newObjects:
             # objectMapper = MapperRegistry.getMapper(obj.__class__.__name__)
             # objectMapper.insert(obj)
             pass
 
 
-    def updateDirty(self):
+    @classmethod
+    def updateDirty(cls):
 
-        for obj in self.newObjects:
+        for obj in cls.newObjects:
             # objectMapper = MapperRegistry.getMapper(obj.__class__.__name__)
             # objectMapper.update(obj)
             pass
 
 
-    def deleteRemoved(self):
+    @classmethod
+    def deleteRemoved(cls):
 
-        for obj in self.newObjects:
+        for obj in cls.newObjects:
             # objectMapper = MapperRegistry.getMapper(obj.__class__.__name__)
             # objectMapper.remove(obj)
             pass
+
+
+class Album(PresentedInDatabaseObject):
+
+    def __init__(self):
+        super().__init__()
+
+        self.title = ""
+
+        self.markNew()
+
+    def setTitle(self, title: str):
+
+        self.title = title
+        self.markDirty()
+
+
