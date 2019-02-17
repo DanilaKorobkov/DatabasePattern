@@ -122,3 +122,4 @@ class Album(PresentedInDatabaseObject):
         self.markDirty()
 
 
+# TODO: Кто создает UnitOfWork
