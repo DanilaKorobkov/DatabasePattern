@@ -109,10 +109,11 @@ class UnitOfWork:
 
 class Album(PresentedInDatabaseObject):
 
-    def __init__(self):
+    def __init__(self, title, artist):
         super().__init__()
 
-        self.title = ""
+        self.title: str = title
+        self.artist: str = artist
 
         self.markNew()
 
