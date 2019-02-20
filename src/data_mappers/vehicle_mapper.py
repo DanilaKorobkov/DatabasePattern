@@ -1,14 +1,19 @@
-from .i_mapper import *
 
 
-class VehicleMapper(IMapper):
+class VehicleMapper:
 
-    def __getFindStatement(self):
+    def __init__(self, identityMap, databaseWrapper):
 
-        return 'SELECT * FROM Vehicle WHERE Id == ?'
+        self.identityMap = identityMap
+        self.databaseWrapper = databaseWrapper
 
 
-    def find(self, databaseId):
+    def find(self, primaryKey):
 
-        return self.__abstractFind(databaseId)
+        obj =  self.identityMap.get(primaryKey)
 
+        if obj is not None:
+            return obj
+
+        else:
+            self.databaseWrapper.select('Vehicle', primaryKey)

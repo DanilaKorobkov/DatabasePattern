@@ -11,17 +11,6 @@ class TestIdentityMap:
         identityMap = IdentityMap()
         return identityMap
 
-    @pytest.fixture
-    def testObject(self):
-
-        class Object:
-            pass
-
-        obj = Object()
-        obj.primaryKey = 1
-
-        return obj
-
 
     def test_get_ifNoObjectWithThisKey_returnNone(self, emptyIdentityMap):
 
