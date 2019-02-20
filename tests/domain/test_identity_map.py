@@ -42,7 +42,7 @@ def test_put_ifObjectWithThisKeyAlreadyExists_raiseException(emptyIdentityMap, t
 
     emptyIdentityMap.put(testObject)
 
-    with pytest.raises(IndexError):
+    with pytest.raises(AlreadyExistsError):
         emptyIdentityMap.put(testObject)
 
 
