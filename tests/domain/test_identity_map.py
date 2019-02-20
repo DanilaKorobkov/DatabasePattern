@@ -3,49 +3,45 @@ from src.identity_map import *
 import pytest
 
 
-@pytest.fixture
-def emptyIdentityMap():
+class TestIdentityMap:
 
-    identityMap = IdentityMap()
-    return identityMap
+    @pytest.fixture
+    def emptyIdentityMap(self):
 
+        identityMap = IdentityMap()
+        return identityMap
 
-@pytest.fixture
-def testObject():
+    @pytest.fixture
+    def testObject(self):
 
-    class Object:
-        pass
+        class Object:
+            pass
 
-    obj = Object()
-    obj.primaryKey = 1
+        obj = Object()
+        obj.primaryKey = 1
 
-    return obj
-
-
-def test_get_ifNoObjectWithThisKey_returnNone(emptyIdentityMap):
-
-    nonExistentPrimaryKey= '0'
-
-    obj = emptyIdentityMap.get(nonExistentPrimaryKey)
-
-    assert obj is None
+        return obj
 
 
-def test_put_storeObjectByThisId(emptyIdentityMap, testObject):
+    def test_get_ifNoObjectWithThisKey_returnNone(self, emptyIdentityMap):
 
-    emptyIdentityMap.put(testObject)
+        nonExistentPrimaryKey= '0'
 
-    assert emptyIdentityMap.get(testObject.primaryKey) is testObject
+        obj = emptyIdentityMap.get(nonExistentPrimaryKey)
+
+        assert obj is None
 
 
-def test_put_ifObjectWithThisKeyAlreadyExists_raiseException(emptyIdentityMap, testObject):
+    def test_put_storeObjectByThisId(self, emptyIdentityMap, testObject):
 
-    emptyIdentityMap.put(testObject)
-
-    with pytest.raises(AlreadyExistsError):
         emptyIdentityMap.put(testObject)
 
+        assert emptyIdentityMap.get(testObject.primaryKey) is testObject
 
 
+    def test_put_ifObjectWithThisKeyAlreadyExists_raiseException(self, emptyIdentityMap, testObject):
 
+        emptyIdentityMap.put(testObject)
 
+        with pytest.raises(AlreadyExistsError):
+            emptyIdentityMap.put(testObject)
