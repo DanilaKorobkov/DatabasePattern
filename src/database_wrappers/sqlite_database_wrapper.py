@@ -11,5 +11,6 @@ class SQLiteDatabaseWrapper(IDatabaseWrapper):
 
             transaction = connection.cursor()
 
-            result = transaction.execute('SELECT FROM ? WHERE ID == ?', (databaseTableName, primaryKey))
+            #TODO: SELECT * FROM ? WHERE Id = ?
+            result = transaction.execute('SELECT * FROM {0} WHERE Id = ?'.format(databaseTableName), (primaryKey, ))
             return result
