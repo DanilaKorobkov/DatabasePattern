@@ -4,7 +4,6 @@ from src.identity_map import IdentityMap
 from src.database_wrappers.i_database_wrapper import IDatabaseWrapper
 
 
-
 def test_find_ifObjectAlreadyLoaded_returnThisObject(mocker, testObject):
 
     mockIdentityMap = IdentityMap()
@@ -33,5 +32,6 @@ def test_find_ifObjectNotLoaded_callDatabaseToSelect(mocker, testObject):
 
     vehicleMapper.find(testObject.primaryKey)
 
-    mockDatabaseWrapper.select.assert_called_once_with('Vehicle', testObject.primaryKey)
+    # TODO: assert_called_once_with + correct parameters
+    mockDatabaseWrapper.select.assert_called_once()
 
