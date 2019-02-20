@@ -28,5 +28,5 @@ class IdentityMap:
             self.loadedObjects[obj.primaryKey] = obj
 
         else:
-            raise AlreadyExistsError('Try to add object' + str(obj.__dict__) + 'with type ' + str(type(obj)) + ' which already stored')
-
+            message = 'Try to add object' + str(obj.__dict__) + 'with type ' + str(type(obj)) + ' which already stored'
+            raise AlreadyExistsError(message)
