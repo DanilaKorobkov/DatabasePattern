@@ -1,12 +1,7 @@
+from .i_mapper import *
 
 
-class VehicleMapper:
-
-    def __init__(self, identityMap, databaseWrapper):
-
-        self.identityMap = identityMap
-        self.databaseWrapper = databaseWrapper
-
+class VehicleMapper(IMapper):
 
     def find(self, primaryKey):
 
@@ -17,3 +12,13 @@ class VehicleMapper:
 
         else:
             self.databaseWrapper.select('Vehicle', primaryKey)
+
+
+    def add(self, obj):
+        raise NotImplementedError
+
+    def update(self, obj):
+        raise NotImplementedError
+
+    def remove(self, primaryKey):
+        raise NotImplementedError

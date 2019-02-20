@@ -19,7 +19,7 @@ def test_find_ifObjectAlreadyLoaded_returnThisObject(mocker, testObject):
     mockDatabaseWrapper.select.assert_not_called()
 
 
-def test_find_ifObjectNotLoaded_callDatabaseToSelect(mocker, testObject):
+def test_find_ifObjectNotLoaded_dbWrapperSelect(mocker, testObject):
 
     mockIdentityMap = IdentityMap()
     mocker.patch.object(mockIdentityMap, 'get', return_value = None)

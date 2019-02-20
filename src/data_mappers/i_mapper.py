@@ -1,27 +1,23 @@
-# Internal
-# Python
-import sqlite3
 
 
 class IMapper:
 
-    def __init__(self):
+    def __init__(self, identityMap, databaseWrapper):
 
-        self.alreadyLoaded = {}
+        self.identityMap = identityMap
+        self.databaseWrapper = databaseWrapper
 
-
-    def __abstractFind(self, databaseId: int):
-
-        if databaseId in self.alreadyLoaded:
-            return self.alreadyLoaded.get(databaseId)
-
-        with sqlite3.connect('example.db') as connection:
-
-            transaction = connection.cursor()
-
-            result = transaction.execute(self.__getFindStatement(), (databaseId, )).fetchone()
-            return result
+        self.tableName: str = None
 
 
-    def __getFindStatement(self):
+    def add(self, obj):
+        raise NotImplementedError
+
+    def update(self, obj):
+        raise NotImplementedError
+
+    def remove(self, primaryKey):
+        raise NotImplementedError
+
+    def find(self, primaryKey):
         raise NotImplementedError
